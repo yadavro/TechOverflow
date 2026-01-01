@@ -1,0 +1,75 @@
+/* App.css */
+.App {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh; /* Ensure the app takes full viewport height */
+  padding-top: 75px; /* Account for fixed navbar height */
+}
+
+.app-container {
+  display: flex;
+  flex: 1; /* Allow the container to grow and take available space */
+  min-height: calc(100vh - 75px); /* Account for navbar height */
+}
+
+.main-layout {
+  display: flex;
+  flex: 1; /* Allow this section to grow and take available space */
+  flex-direction: column; /* Stack content vertically */
+  transition: margin-left 0.3s ease; /* Smooth transition for sidebar toggle */
+}
+
+.main-layout.with-sidebar {
+  margin-left: 250px; /* Offset for the side navbar when open */
+}
+
+.main-layout.full-width {
+  margin-left: 0; /* Full width when sidebar is closed */
+}
+
+.content {
+  flex: 1; /* Take available space */
+  padding: 20px; /* Add some content padding */
+  min-height: calc(100vh - 150px); /* Ensure minimum content height for footer to be at bottom */
+  transition: all 0.3s ease; /* Smooth transition for content area */
+}
+
+/* Desktop and larger screens - smooth sidebar transitions */
+@media (min-width: 769px) {
+  .main-layout.with-sidebar {
+    margin-left: 250px; /* Match sidebar width exactly */
+  }
+  
+  .main-layout.full-width {
+    margin-left: 0; /* Full screen when sidebar is collapsed */
+  }
+}
+
+/* Responsive layout adjustments */
+@media (max-width: 768px) {
+  .App {
+    padding-top: 75px; /* Ensure navbar space on mobile */
+  }
+  
+  .main-layout,
+  .main-layout.with-sidebar,
+  .main-layout.full-width {
+    margin-left: 0 !important; /* Always full width on mobile, override desktop classes */
+  }
+  
+  .content {
+    padding: 15px;
+    min-height: calc(100vh - 150px);
+  }
+}
+
+@media (max-width: 480px) {
+  .App {
+    padding-top: 75px; /* Consistent navbar space on small screens */
+  }
+  
+  .content {
+    padding: 10px;
+    min-height: calc(100vh - 100px);
+  }
+}

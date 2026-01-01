@@ -1,0 +1,331 @@
+/* Modern SideNav Styles */
+.side-navbar {
+  position: fixed;
+  top: 70px;
+    left: 0; 
+  height: calc(100vh - 70px);
+  width: 250px;
+  background: linear-gradient(180deg, #ffffff 0%, #f8f9ff 100%);
+  border-right: 1px solid rgba(102, 126, 234, 0.15);
+  box-shadow: 2px 0 20px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 1000;
+  overflow: hidden;
+  backdrop-filter: blur(10px);
+}
+
+/* Collapsed State */
+.side-navbar.collapsed {
+  width: 70px;
+}
+
+.side-navbar.collapsed .nav-text {
+  opacity: 0;
+  width: 0;
+  margin-left: 0;
+}
+
+.side-navbar.collapsed .nav-item {
+  justify-content: center;
+  padding: 12px;
+}
+
+/* Hidden State (Mobile) */
+.side-navbar.hidden {
+  transform: translateX(-100%);
+}
+
+.side-navbar.visible {
+  transform: translateX(0);
+}
+
+/* Toggle button is now in the navbar, no longer needed here */
+
+/* Sidebar Backdrop */
+.sidebar-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(2px);
+  z-index: 999;
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* Navigation Content */
+.nav-content {
+  padding: 20px 0;
+  height: 100%;
+  overflow-y: auto;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* Internet Explorer 10+ */
+}
+
+/* Navigation Links */
+.nav-links {
+  list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 0 12px;
+}
+
+/* Navigation Items */
+.nav-item {
+  display: flex;
+  align-items: center;
+  padding: 14px 16px;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+  user-select: none;
+  color: #5a6c7d;
+  font-weight: 500;
+}
+
+/* Hover Effects */
+.nav-item::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(102, 126, 234, 0.1), transparent);
+  transition: left 0.6s;
+}
+
+.nav-item:hover::before {
+  left: 100%;
+}
+
+.nav-item:hover {
+  background: rgba(102, 126, 234, 0.08);
+  color: #333;
+  transform: translateX(4px);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.15);
+}
+
+/* Active State */
+.nav-item.active {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.3);
+  transform: translateX(8px);
+}
+
+.nav-item.active::before {
+  display: none;
+}
+
+.nav-item.active .nav-icon {
+  color: white;
+  transform: scale(1.1);
+}
+
+.nav-item.active .nav-text {
+  color: white;
+  font-weight: 600;
+}
+
+.nav-item.active:hover {
+  transform: translateX(8px);
+  box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+}
+
+/* Icons */
+.nav-icon {
+  font-size: 1.2rem;
+  color: #667eea;
+  transition: all 0.3s ease;
+  min-width: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 12px;
+}
+
+.nav-item:hover .nav-icon {
+  color: #764ba2;
+  transform: scale(1.05);
+}
+
+/* Text */
+.nav-text {
+    font-size: 1rem;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+  opacity: 1;
+  width: auto;
+  margin-left: 0;
+  overflow: hidden;
+}
+
+.nav-item:hover .nav-text {
+  color: #2c3e50;
+}
+
+/* Hide Scrollbar */
+.nav-content::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Edge */
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .side-navbar {
+    width: 280px;
+    transform: translateX(-100%);
+    box-shadow: 4px 0 30px rgba(0, 0, 0, 0.15);
+    backdrop-filter: blur(20px);
+  }
+  
+  .side-navbar.visible {
+    transform: translateX(0);
+  }
+  
+  .side-navbar.collapsed {
+    width: 280px;
+  }
+}
+
+@media (max-width: 480px) {
+  .side-navbar {
+    width: 280px;
+  }
+  
+  .nav-item {
+    padding: 16px 20px;
+  }
+  
+  .nav-text {
+    font-size: 0.95rem;
+  }
+}
+
+/* Animation for smooth transitions */
+.nav-item {
+  animation: slideIn 0.3s ease-out;
+}
+
+.nav-item:nth-child(1) { animation-delay: 0.1s; }
+.nav-item:nth-child(2) { animation-delay: 0.15s; }
+.nav-item:nth-child(3) { animation-delay: 0.2s; }
+.nav-item:nth-child(4) { animation-delay: 0.25s; }
+.nav-item:nth-child(5) { animation-delay: 0.3s; }
+.nav-item:nth-child(6) { animation-delay: 0.35s; }
+.nav-item:nth-child(7) { animation-delay: 0.4s; }
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Focus states for accessibility */
+.nav-item:focus {
+  outline: 2px solid rgba(102, 126, 234, 0.6);
+  outline-offset: 2px;
+}
+
+.toggle-btn:focus {
+  outline: 2px solid rgba(255, 255, 255, 0.6);
+  outline-offset: 2px;
+}
+
+/* Improved hover animation */
+.nav-item {
+  position: relative;
+}
+
+.nav-item::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: 0;
+  height: 2px;
+  background: linear-gradient(45deg, #667eea, #764ba2);
+  transition: width 0.3s ease;
+  border-radius: 1px;
+}
+
+.nav-item:hover::after {
+  width: 4px;
+}
+
+.nav-item.active::after {
+  width: 4px;
+  background: rgba(255, 255, 255, 0.8);
+}
+
+/* Loading state */
+.nav-item.loading {
+  pointer-events: none;
+  opacity: 0.7;
+}
+
+.nav-item.loading .nav-icon {
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+/* Enhanced collapsed state */
+.side-navbar.collapsed .nav-item {
+  position: relative;
+}
+
+.side-navbar.collapsed .nav-item:hover {
+  transform: translateX(0);
+}
+
+.side-navbar.collapsed .nav-item:hover::after {
+  content: attr(title);
+  position: absolute;
+  left: 100%;
+  top: 50%;
+  transform: translateY(-50%);
+  background: #333;
+  color: white;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  white-space: nowrap;
+  z-index: 1000;
+  margin-left: 10px;
+  opacity: 1;
+  pointer-events: none;
+}
+
+.side-navbar.collapsed .nav-item:hover::before {
+  content: '';
+  position: absolute;
+  left: 100%;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 0;
+  height: 0;
+  border: 5px solid transparent;
+  border-right-color: #333;
+  margin-left: 5px;
+  z-index: 1001;
+}

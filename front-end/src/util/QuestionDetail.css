@@ -1,0 +1,43 @@
+/* QuestionDetail.css */
+
+.question-detail {
+    max-width: 800px;
+    margin: 0px auto 180px auto; /* Center the form */
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    position: relative; /* Ensure it doesn't overlap with fixed elements */
+    z-index: 1; /* Keep it above other content, but below the footer and navbar */
+  }
+  
+  .questionDetailTitle {
+    display: block;
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: #333;
+  }
+  
+  .questionDetailDescription {
+    display: block;
+    font-size: 18px;
+    margin-bottom: 20px;
+    color: #555;
+  }
+  
+.questionDetailSubmit{
+    display: inline-block;
+    background-color: #007bff;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+  }
+  
+  .questionDetailSubmit:hover {
+    background-color: #0056b3;
+  }
+  
