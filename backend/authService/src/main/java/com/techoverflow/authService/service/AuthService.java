@@ -4,6 +4,8 @@ import com.techoverflow.authService.model.*;
 import com.techoverflow.authService.repository.UserRepository;
 import com.techoverflow.authService.util.InMemoryResetTokenStore;
 import com.techoverflow.authService.util.JwtUtil;
+import com.techoverflow.authService.service.RedisService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -14,7 +16,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-
+@Slf4j
 @Service
 public class AuthService {
 
@@ -29,6 +31,12 @@ public class AuthService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private RedisService redisService;
+
+    @Autowired
+    private  EmailProducer emailProducer;
 
     private final InMemoryResetTokenStore tokenStore;
     private final EmailService emailService;
@@ -55,17 +63,20 @@ public class AuthService {
         String refreshTokenValue = jwtUtil.generateRefreshToken();
 
         RefreshToken refeshToken = new RefreshToken(
-                refreshTokenValue,
                 request.getEmail(),
+                refreshTokenValue,
                 Instant.now().plusSeconds(refreshExpiration));
 
         refreshStore.put(refreshTokenValue,refeshToken);
+        redisService.set(refreshTokenValue,refeshToken);
 
         return new LoginResponse(accessToken,refreshTokenValue);
     }
 
     public RefreshToken validateRefreshToken(String token){
-        RefreshToken refreshToken=refreshStore.get(token);
+//        RefreshToken refreshToken=refreshStore.get(token);
+        RefreshToken refreshToken=redisService.get(token,RefreshToken.class);
+        log.info("Refresh Token: "+refreshToken);
         if(refreshToken==null){
             throw new RuntimeException("Invalid refresh token");
         }
@@ -90,10 +101,19 @@ public class AuthService {
         user.setPassword(passwordEncoder.encode(request.password()));
         User savedUser = userRepository.save(user);
 
+        emailProducer.sendEmailEvent(
+                new EmailEvent(
+                        request.email(),
+                        "Welcome to TechOverflow",
+                        "Thanks for signing up!"
+                )
+        );
+
         return savedUser;
     }
 
     public void changePassword(String email, ChangePasswordRequest request) {
+        log.info("email: "+email);
         User user = userRepository.findById(email)
                 .orElseThrow(() -> new IllegalArgumentException("User not found"));
         if (!passwordEncoder.matches(request.currentPassword(), user.getPassword())) {
@@ -112,7 +132,13 @@ public class AuthService {
         tokenStore.save(resetToken, user.getEmail(), Duration.ofMinutes(15));
 
         emailService.sendMail(user.getEmail(), resetToken, "Reset-Token to change password");
-
+        emailProducer.sendEmailEvent(
+                new EmailEvent(
+                        user.getEmail(),
+                        "Reset app-password",
+                        "Refresh-token:"+resetToken
+                )
+        );
     }
 
     public void resetPassword(ResetPasswordRequest request) {
@@ -127,6 +153,16 @@ public class AuthService {
         userRepository.save(user);
 
         tokenStore.delete(request.token());
+    }
+
+    public void logout(String refreshToken) {
+
+        RefreshToken removed = refreshStore.remove(refreshToken);
+        redisService.deleteKey(refreshToken);
+
+        if (removed == null) {
+            throw new IllegalArgumentException("Invalid refresh token");
+        }
     }
 
 

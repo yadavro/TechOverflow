@@ -1,11 +1,33 @@
 spring:
   application:
     name: authService
+
+  data:
+    redis:
+      host: localhost
+      port: 6379
+
+  kafka:
+    bootstrap-servers: localhost:9092
+
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+
+    consumer:
+      group-id: auth-email-group
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring.json.trusted.packages: "*"
+
   datasource:
     url: jdbc:mysql://localhost:3306/techoverflow
     username: root
     password: Kota@2020
     driver-class-name: com.mysql.cj.jdbc.Driver
+
   mail:
     host: smtp.gmail.com
     port: 587

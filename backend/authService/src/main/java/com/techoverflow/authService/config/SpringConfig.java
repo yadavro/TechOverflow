@@ -31,7 +31,7 @@ public class SpringConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
                                 "/auth/login",
-                                "/auth/refresh",
+                                "/auth/refresh-token",
                                 "/auth/signup",
                                 "/auth/forgot-password",
                                 "/auth/reset-password"

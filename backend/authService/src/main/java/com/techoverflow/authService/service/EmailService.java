@@ -1,5 +1,6 @@
 package com.techoverflow.authService.service;
 
+import com.techoverflow.authService.model.EmailEvent;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
@@ -27,6 +28,24 @@ public class EmailService {
         } catch (Exception e) {
             log.info("cannot send mail");
             log.error("Failed to send mail. Error: {}", e.getMessage());
+        }
+    }
+
+    public void sendEmail(EmailEvent event) {
+
+        try {
+            SimpleMailMessage message = new SimpleMailMessage();
+            message.setTo(event.email());
+            message.setSubject(event.subject());
+            message.setText(event.body());
+
+            javaMailSender.send(message);
+
+            log.info("Email sent to {}", event.email());
+
+        } catch (Exception ex) {
+            log.error("Email sending failed for {}", event.email(), ex);
+            throw ex;
         }
     }
 
