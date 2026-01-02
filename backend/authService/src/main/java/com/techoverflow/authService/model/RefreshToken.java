@@ -11,9 +11,7 @@ import java.time.Instant;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity
 public class RefreshToken {
-    @Id
     private String email;
     private String token;
     private Instant expiryDate;
