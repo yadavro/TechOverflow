@@ -131,7 +131,6 @@ public class AuthService {
         String resetToken = UUID.randomUUID().toString();
         tokenStore.save(resetToken, user.getEmail(), Duration.ofMinutes(15));
 
-        emailService.sendMail(user.getEmail(), resetToken, "Reset-Token to change password");
         emailProducer.sendEmailEvent(
                 new EmailEvent(
                         user.getEmail(),
